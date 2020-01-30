@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.weatherapppma.ui.AboutFragment;
+import com.example.weatherapppma.ui.FileWriter;
 import com.example.weatherapppma.ui.HomeFragment;
 import com.example.weatherapppma.ui.UserInputFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -36,6 +37,16 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FileWriter.Init(this);
+
+        String content = FileWriter.Read();
+        String[] lines = content.split("\n");
+        for(int i = 0; i< lines.length; i++)
+        {
+            if(!lines[i].equals(""))
+                homeFragment.AddItem(lines[i],false);
+        }
+
         setContentView(R.layout.activity_main);
         mainActivity = this;
 
@@ -43,13 +54,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         navigation.setOnNavigationItemSelectedListener(this);
 
         loadFragment(homeFragment);
-
-
-        String a = WeatherAPIRequest.GetRequest("California");
-        homeFragment.AddItem(a);
-
-        //homeFragment.RemoveItem(a);
-
     }
 
     @Override
