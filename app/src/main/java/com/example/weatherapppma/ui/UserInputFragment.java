@@ -36,8 +36,16 @@ public class UserInputFragment extends Fragment {
                 // Code here executes on main thread after user presses button
                 if(!textbox.getText().toString().equals("")) {
                     String a = WeatherAPIRequest.GetRequest(textbox.getText().toString());
+
+
                     String[] b = a.split(",");
-                    MainActivity.mainActivity.homeFragment.AddItem(a);
+                    String city = b[0];
+                    String temperature = b[1];
+                    String sum = city +" => Teplota: "+ temperature +"°C";
+
+                    //MainActivity.mainActivity.homeFragment.AddItem(a, true);
+                    MainActivity.mainActivity.homeFragment.AddItem(sum, true);
+
                 }
                 else
                     Toast.makeText(view.getContext(),"Nezadal si input",Toast.LENGTH_LONG).show();

@@ -13,11 +13,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.weatherapppma.MainActivity;
 import com.example.weatherapppma.R;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class HomeFragment extends Fragment {
@@ -43,7 +46,7 @@ public class HomeFragment extends Fragment {
                                            int pos, long id) {
                 // TODO Auto-generated method stub
 
-                RemoveItem(arrayAdapter.getItem(pos).toString());
+                RemoveItem(pos, true);
 
                 return true;
             }
@@ -59,20 +62,31 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    public void AddItem(String text)
+    public void AddItem(String text, Boolean writeToFile)
     {
         if(arrayAdapter == null)
             arrayList.add(text);
         else
             arrayAdapter.add(text);
+
+        if(writeToFile)
+            FileWriter.Write(text);
     }
 
-    public void RemoveItem(String text)
+    public void RemoveItem(int pos, Boolean removeFromFile)
     {
         if(arrayAdapter == null)
-            arrayList.remove(text);
-        else
-            arrayAdapter.remove(text);
+            arrayList.remove(pos);
+        else {
+
+            arrayAdapter.remove(arrayAdapter.getItem(pos));
+            listView.invalidate();
+            Toast.makeText(listView.getContext(),"Odstranil si prvok zo Zoznamu",Toast.LENGTH_LONG).show();
+        }
+
+        if(removeFromFile)
+            FileWriter.RemoveLineFromFile(pos);
+
     }
 
 }
